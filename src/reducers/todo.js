@@ -4,7 +4,9 @@ import uuid from "uuid/v1";
 export const todoActions = {
   create: "CREATE",
   toggleDone: "TOGGLE_DONE",
-  toggleDoneAll: "TOGGLE_DONE_ALL"
+  toggleDoneAll: "TOGGLE_DONE_ALL",
+  delete: "DELETE",
+  edit: "EDIT"
 };
 
 export const todoReducer = () =>
@@ -19,7 +21,8 @@ export const todoReducer = () =>
               { id: uuid(), name: action.payload, done: false }
             ]
           };
-        case todoActions.done: {
+
+        case todoActions.toggleDone: {
           const index = state.items.findIndex(
             item => item.id === action.payload
           );
@@ -27,10 +30,11 @@ export const todoReducer = () =>
           return {
             ...state,
             items: Object.assign([], state.items, {
-              [index]: { ...state.items[index], done: !state.items[index] }
+              [index]: { ...state.items[index], done: !state.items[index].done }
             })
           };
         }
+
         case todoActions.toggleDoneAll:
           return {
             ...state,
@@ -39,6 +43,26 @@ export const todoReducer = () =>
               done: action.payload
             }))
           };
+
+        case todoActions.delete:
+          return {
+            ...state,
+            items: state.items.filter(item => item.id !== action.payload)
+          };
+
+        case todoActions.edit: {
+          const index = state.items.findIndex(
+            item => item.id === action.payload.id
+          );
+
+          return {
+            ...state,
+            items: Object.assign([], state.items, {
+              [index]: { ...state.items[index], name: action.payload.name }
+            })
+          };
+        }
+
         default:
           return state;
       }

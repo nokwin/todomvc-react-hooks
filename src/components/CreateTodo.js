@@ -1,10 +1,7 @@
 import React, { useState } from "react";
 
 import { todoActions } from "../reducers/todo";
-
-const keys = {
-  enter: "Enter"
-};
+import { keys } from "../utils/keys";
 
 export const CreateTodo = ({ dispatch }) => {
   const [newTodo, setNewTodo] = useState("");
