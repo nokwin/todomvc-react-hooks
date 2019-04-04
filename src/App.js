@@ -1,13 +1,7 @@
-import React, { Fragment, useState, useReducer } from "react";
-import uuid from "uuid/v1";
+import React, { Fragment, useState } from "react";
 
 import { Todo } from "./components/Todo";
-
-const actions = {
-  create: "CREATE",
-  toggleDone: "TOGGLE_DONE",
-  toggleDoneAll: "TOGGLE_DONE_ALL"
-};
+import { todoReducer, todoActions } from "./reducers/todo";
 
 const keys = {
   enter: "Enter"
@@ -16,45 +10,7 @@ const keys = {
 export const App = () => {
   const [newTodo, setNewTodo] = useState("");
   const [allCompleted, setAllCompleted] = useState(false);
-  const [todosState, dispatch] = useReducer(
-    (state, action) => {
-      switch (action.type) {
-        case actions.create:
-          return {
-            ...state,
-            items: [
-              ...state.items,
-              { id: uuid(), name: action.payload, done: false }
-            ]
-          };
-        case actions.done: {
-          const index = state.items.findIndex(
-            item => item.id === action.payload
-          );
-
-          return {
-            ...state,
-            items: Object.assign([], state.items, {
-              [index]: { ...state.items[index], done: !state.items[index] }
-            })
-          };
-        }
-        case actions.toggleDoneAll:
-          return {
-            ...state,
-            items: state.items.map(item => ({
-              ...item,
-              done: action.payload
-            }))
-          };
-        default:
-          return state;
-      }
-    },
-    {
-      items: []
-    }
-  );
+  const [todosState, dispatch] = todoReducer;
 
   function handleChange(e) {
     setNewTodo(e.target.value);
@@ -63,7 +19,7 @@ export const App = () => {
   function handleKeyPress(e) {
     // Because of safari i must compare the string
     if (e.key === keys.enter) {
-      dispatch({ type: actions.create, payload: newTodo });
+      dispatch({ type: todoActions.create, payload: newTodo });
       setNewTodo("");
     }
   }
@@ -75,7 +31,7 @@ export const App = () => {
   function handleCheckbox(e) {
     setAllCompleted(e.target.checked);
 
-    dispatch({ type: actions.toggleDoneAll, payload: e.target.checked });
+    dispatch({ type: todoActions.toggleDoneAll, payload: e.target.checked });
   }
 
   return (
