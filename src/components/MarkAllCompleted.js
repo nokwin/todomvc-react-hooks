@@ -1,6 +1,6 @@
 import React, { Fragment, useState } from "react";
 
-import { todoActions } from "./reducers/todo";
+import { todoActions } from "../reducers/todo";
 
 export const MarkAllCompleted = ({ dispatch }) => {
   const [allCompleted, setAllCompleted] = useState(false);

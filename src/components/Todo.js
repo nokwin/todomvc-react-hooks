@@ -2,7 +2,7 @@ import React, { useState, useRef } from "react";
 import cn from "classnames";
 
 import { todoActions } from "../reducers/todo";
-import { keys } from "../utils/keys";
+import { keys } from "../utils/enums";
 
 export const Todo = ({ item, dispatch }) => {
   const [editValue, setEditValue] = useState(item.name);

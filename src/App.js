@@ -1,23 +1,15 @@
 import React, { Fragment, useState } from "react";
-import cn from "classnames";
 
 import { Todo } from "./components/Todo";
 import { todoReducer } from "./reducers/todo";
 import { CreateTodo } from "./components/CreateTodo";
 import { MarkAllCompleted } from "./components/MarkAllCompleted";
-
-const filters = {
-  all: "ALL",
-  active: "ACTIVE",
-  completed: "COMPLETED"
-};
+import { filters } from "./utils/enums";
+import { FilterItem } from "./components/FilterItem";
 
 export const App = () => {
   const [filter, setFilter] = useState(filters.all);
   const [todosState, dispatch] = todoReducer();
-  const allFilterClasses = cn({ selected: filter === filters.all });
-  const activeFilterClasses = cn({ selected: filter === filters.active });
-  const completedFilterClasses = cn({ selected: filter === filters.completed });
 
   function renderTodo(item) {
     return <Todo item={item} key={`todo-${item.id}`} dispatch={dispatch} />;
@@ -25,18 +17,6 @@ export const App = () => {
 
   function getCountUncompleted() {
     return getTodos().filter(item => !item.done).length;
-  }
-
-  function selectAll() {
-    setFilter(filters.all);
-  }
-
-  function selectActive() {
-    setFilter(filters.active);
-  }
-
-  function selectCompleted() {
-    setFilter(filters.completed);
   }
 
   function getTodos() {
@@ -70,29 +50,27 @@ export const App = () => {
                 <strong>{getCountUncompleted()}</strong> item left
               </span>
               <ul className="filters">
-                <li>
-                  <a className={allFilterClasses} onClick={selectAll} href="#/">
-                    All
-                  </a>
-                </li>
-                <li>
-                  <a
-                    className={activeFilterClasses}
-                    onClick={selectActive}
-                    href="#/active"
-                  >
-                    Active
-                  </a>
-                </li>
-                <li>
-                  <a
-                    className={completedFilterClasses}
-                    onClick={selectCompleted}
-                    href="#/completed"
-                  >
-                    Completed
-                  </a>
-                </li>
+                <FilterItem
+                  filter={filters.all}
+                  setFilter={setFilter}
+                  currentFilter={filter}
+                >
+                  All
+                </FilterItem>
+                <FilterItem
+                  filter={filters.active}
+                  setFilter={setFilter}
+                  currentFilter={filter}
+                >
+                  Active
+                </FilterItem>
+                <FilterItem
+                  filter={filters.completed}
+                  setFilter={setFilter}
+                  currentFilter={filter}
+                >
+                  Completed
+                </FilterItem>
               </ul>
               <button className="clear-completed">Clear completed</button>
             </footer>
