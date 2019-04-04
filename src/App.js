@@ -2,26 +2,14 @@ import React, { Fragment, useState } from "react";
 
 import { Todo } from "./components/Todo";
 import { todoReducer, todoActions } from "./reducers/todo";
-
-const keys = {
-  enter: "Enter"
-};
+import { CreateTodo } from "./components/CreateTodo";
 
 export const App = () => {
-  const [newTodo, setNewTodo] = useState("");
   const [allCompleted, setAllCompleted] = useState(false);
-  const [todosState, dispatch] = todoReducer;
+  const [todosState, dispatch] = todoReducer();
 
-  function handleChange(e) {
-    setNewTodo(e.target.value);
-  }
-
-  function handleKeyPress(e) {
-    // Because of safari i must compare the string
-    if (e.key === keys.enter) {
-      dispatch({ type: todoActions.create, payload: newTodo });
-      setNewTodo("");
-    }
+  function submitTodo(value) {
+    dispatch({ type: todoActions.create, payload: value });
   }
 
   function renderTodo(item) {
@@ -29,9 +17,8 @@ export const App = () => {
   }
 
   function handleCheckbox(e) {
-    setAllCompleted(e.target.checked);
-
     dispatch({ type: todoActions.toggleDoneAll, payload: e.target.checked });
+    setAllCompleted(e.target.checked);
   }
 
   return (
@@ -39,14 +26,7 @@ export const App = () => {
       <section className="todoapp">
         <header className="header">
           <h1>todos</h1>
-          <input
-            className="new-todo"
-            placeholder="What needs to be done?"
-            autoFocus
-            onChange={handleChange}
-            value={newTodo}
-            onKeyPress={handleKeyPress}
-          />
+          <CreateTodo onSubmit={submitTodo} />
         </header>
         {todosState.items.length > 0 && (
           <Fragment>

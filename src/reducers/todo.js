@@ -7,40 +7,43 @@ export const todoActions = {
   toggleDoneAll: "TOGGLE_DONE_ALL"
 };
 
-export const todoReducer = useReducer(
-  (state, action) => {
-    switch (action.type) {
-      case todoActions.create:
-        return {
-          ...state,
-          items: [
-            ...state.items,
-            { id: uuid(), name: action.payload, done: false }
-          ]
-        };
-      case todoActions.done: {
-        const index = state.items.findIndex(item => item.id === action.payload);
+export const todoReducer = () =>
+  useReducer(
+    (state, action) => {
+      switch (action.type) {
+        case todoActions.create:
+          return {
+            ...state,
+            items: [
+              ...state.items,
+              { id: uuid(), name: action.payload, done: false }
+            ]
+          };
+        case todoActions.done: {
+          const index = state.items.findIndex(
+            item => item.id === action.payload
+          );
 
-        return {
-          ...state,
-          items: Object.assign([], state.items, {
-            [index]: { ...state.items[index], done: !state.items[index] }
-          })
-        };
+          return {
+            ...state,
+            items: Object.assign([], state.items, {
+              [index]: { ...state.items[index], done: !state.items[index] }
+            })
+          };
+        }
+        case todoActions.toggleDoneAll:
+          return {
+            ...state,
+            items: state.items.map(item => ({
+              ...item,
+              done: action.payload
+            }))
+          };
+        default:
+          return state;
       }
-      case todoActions.toggleDoneAll:
-        return {
-          ...state,
-          items: state.items.map(item => ({
-            ...item,
-            done: action.payload
-          }))
-        };
-      default:
-        return state;
+    },
+    {
+      items: []
     }
-  },
-  {
-    items: []
-  }
-);
+  );
