@@ -5,7 +5,7 @@ import { todoReducer, todoActions } from "./reducers/todo";
 import { CreateTodo } from "./components/CreateTodo";
 import { MarkAllCompleted } from "./components/MarkAllCompleted";
 import { filters } from "./utils/enums";
-import { FilterItem } from "./components/FilterItem";
+import { Filters } from "./components/Filters";
 
 export const App = () => {
   const [filter, setFilter] = useState(filters.all);
@@ -53,29 +53,7 @@ export const App = () => {
               <span className="todo-count">
                 <strong>{getCountUncompleted()}</strong> item left
               </span>
-              <ul className="filters">
-                <FilterItem
-                  filter={filters.all}
-                  setFilter={setFilter}
-                  currentFilter={filter}
-                >
-                  All
-                </FilterItem>
-                <FilterItem
-                  filter={filters.active}
-                  setFilter={setFilter}
-                  currentFilter={filter}
-                >
-                  Active
-                </FilterItem>
-                <FilterItem
-                  filter={filters.completed}
-                  setFilter={setFilter}
-                  currentFilter={filter}
-                >
-                  Completed
-                </FilterItem>
-              </ul>
+              <Filters filter={filter} setFilter={setFilter} />
               <button className="clear-completed" onClick={clearCompleted}>
                 Clear completed
               </button>
