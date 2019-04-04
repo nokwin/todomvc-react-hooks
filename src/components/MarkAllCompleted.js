@@ -1,12 +1,10 @@
 import React, { Fragment, useState } from "react";
 
-import { todoActions } from "../reducers/todo";
-
-export const MarkAllCompleted = ({ dispatch }) => {
+export const MarkAllCompleted = ({ store }) => {
   const [allCompleted, setAllCompleted] = useState(false);
 
   function handleCheckbox(e) {
-    dispatch({ type: todoActions.toggleDoneAll, payload: e.target.checked });
+    store.toggleDoneAll(e.target.checked);
     setAllCompleted(e.target.checked);
   }
 

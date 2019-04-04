@@ -1,39 +1,14 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment } from "react";
+import { observer } from "mobx-react";
 
 import { Todo } from "./components/Todo";
-import { todoReducer, todoActions } from "./reducers/todo";
 import { CreateTodo } from "./components/CreateTodo";
 import { MarkAllCompleted } from "./components/MarkAllCompleted";
-import { filters } from "./utils/enums";
 import { Filters } from "./components/Filters";
 
-export const App = () => {
-  const [filter, setFilter] = useState(filters.all);
-  const [todosState, dispatch] = todoReducer();
-
+export const AppComponent = ({ store }) => {
   function renderTodo(item) {
-    return <Todo item={item} key={`todo-${item.id}`} dispatch={dispatch} />;
-  }
-
-  function getCountUncompleted() {
-    return getTodos().filter(item => !item.done).length;
-  }
-
-  function getTodos() {
-    return todosState.items.filter(item => {
-      switch (filter) {
-        case filters.active:
-          return !item.done;
-        case filters.completed:
-          return item.done;
-        default:
-          return true;
-      }
-    });
-  }
-
-  function clearCompleted() {
-    dispatch({ type: todoActions.clearCompleted });
+    return <Todo item={item} key={`todo-${item.id}`} store={store} />;
   }
 
   return (
@@ -41,20 +16,23 @@ export const App = () => {
       <section className="todoapp">
         <header className="header">
           <h1>todos</h1>
-          <CreateTodo dispatch={dispatch} />
+          <CreateTodo store={store} />
         </header>
-        {todosState.items.length > 0 && (
+        {store.items.length > 0 && (
           <Fragment>
             <section className="main">
-              <MarkAllCompleted dispatch={dispatch} />
-              <ul className="todo-list">{getTodos().map(renderTodo)}</ul>
+              <MarkAllCompleted store={store} />
+              <ul className="todo-list">{store.todos.map(renderTodo)}</ul>
             </section>
             <footer className="footer">
               <span className="todo-count">
-                <strong>{getCountUncompleted()}</strong> item left
+                <strong>{store.countUncompleted}</strong> item left
               </span>
-              <Filters filter={filter} setFilter={setFilter} />
-              <button className="clear-completed" onClick={clearCompleted}>
+              <Filters filter={store.filter} setFilter={store.changeFilter} />
+              <button
+                className="clear-completed"
+                onClick={store.clearCompleted}
+              >
                 Clear completed
               </button>
             </footer>
@@ -76,3 +54,5 @@ export const App = () => {
     </Fragment>
   );
 };
+
+export const App = observer(AppComponent);

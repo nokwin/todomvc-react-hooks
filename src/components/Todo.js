@@ -1,21 +1,20 @@
 import React, { useState, useRef } from "react";
 import cn from "classnames";
 
-import { todoActions } from "../reducers/todo";
 import { keys } from "../utils/enums";
 
-export const Todo = ({ item, dispatch }) => {
+export const Todo = ({ item, store }) => {
   const [editValue, setEditValue] = useState(item.name);
   const [isEditing, setIsEditing] = useState(false);
   const editElement = useRef(null);
   const classes = cn({ completed: item.done, editing: isEditing });
 
   function handleOnChange() {
-    dispatch({ type: todoActions.toggleDone, payload: item.id });
+    store.toggleDone(item.id);
   }
 
   function handleOnClick() {
-    dispatch({ type: todoActions.delete, payload: item.id });
+    store.delete(item.id);
   }
 
   function handleEditOnChange(e) {
@@ -32,10 +31,7 @@ export const Todo = ({ item, dispatch }) => {
 
   function finishEditing() {
     setIsEditing(false);
-    dispatch({
-      type: todoActions.edit,
-      payload: { id: item.id, name: editValue }
-    });
+    store.edit(item.id, editValue);
   }
 
   function handleOnKeyPress(e) {
