@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 
+import { todoActions } from "../reducers/todo";
+
 const keys = {
   enter: "Enter"
 };
 
-export const CreateTodo = ({ onSubmit }) => {
+export const CreateTodo = ({ dispatch }) => {
   const [newTodo, setNewTodo] = useState("");
 
   function handleChange(e) {
@@ -14,7 +16,7 @@ export const CreateTodo = ({ onSubmit }) => {
   function handleKeyPress(e) {
     // Because of safari i must compare the string
     if (e.key === keys.enter) {
-      onSubmit(e.target.value);
+      dispatch({ type: todoActions.create, payload: e.target.value });
       setNewTodo("");
     }
   }

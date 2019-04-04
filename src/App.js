@@ -8,10 +8,6 @@ export const App = () => {
   const [allCompleted, setAllCompleted] = useState(false);
   const [todosState, dispatch] = todoReducer();
 
-  function submitTodo(value) {
-    dispatch({ type: todoActions.create, payload: value });
-  }
-
   function renderTodo(item) {
     return <Todo item={item} key={`todo-${item.id}`} />;
   }
@@ -26,7 +22,7 @@ export const App = () => {
       <section className="todoapp">
         <header className="header">
           <h1>todos</h1>
-          <CreateTodo onSubmit={submitTodo} />
+          <CreateTodo dispatch={dispatch} />
         </header>
         {todosState.items.length > 0 && (
           <Fragment>
