@@ -6,7 +6,8 @@ export const todoActions = {
   toggleDone: "TOGGLE_DONE",
   toggleDoneAll: "TOGGLE_DONE_ALL",
   delete: "DELETE",
-  edit: "EDIT"
+  edit: "EDIT",
+  clearCompleted: "CLEAR_COMPLETED"
 };
 
 export const todoReducer = () =>
@@ -62,6 +63,12 @@ export const todoReducer = () =>
             })
           };
         }
+
+        case todoActions.clearCompleted:
+          return {
+            ...state,
+            items: state.items.filter(item => !item.done)
+          };
 
         default:
           return state;

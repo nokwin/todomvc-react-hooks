@@ -1,7 +1,7 @@
 import React, { Fragment, useState } from "react";
 
 import { Todo } from "./components/Todo";
-import { todoReducer } from "./reducers/todo";
+import { todoReducer, todoActions } from "./reducers/todo";
 import { CreateTodo } from "./components/CreateTodo";
 import { MarkAllCompleted } from "./components/MarkAllCompleted";
 import { filters } from "./utils/enums";
@@ -30,6 +30,10 @@ export const App = () => {
           return true;
       }
     });
+  }
+
+  function clearCompleted() {
+    dispatch({ type: todoActions.clearCompleted });
   }
 
   return (
@@ -72,7 +76,9 @@ export const App = () => {
                   Completed
                 </FilterItem>
               </ul>
-              <button className="clear-completed">Clear completed</button>
+              <button className="clear-completed" onClick={clearCompleted}>
+                Clear completed
+              </button>
             </footer>
           </Fragment>
         )}
