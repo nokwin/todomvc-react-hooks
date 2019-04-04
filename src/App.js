@@ -2,8 +2,9 @@ import React, { Fragment, useState } from "react";
 import cn from "classnames";
 
 import { Todo } from "./components/Todo";
-import { todoReducer, todoActions } from "./reducers/todo";
+import { todoReducer } from "./reducers/todo";
 import { CreateTodo } from "./components/CreateTodo";
+import { MarkAllCompleted } from "./components/MarkAllCompleted";
 
 const filters = {
   all: "ALL",
@@ -12,7 +13,6 @@ const filters = {
 };
 
 export const App = () => {
-  const [allCompleted, setAllCompleted] = useState(false);
   const [filter, setFilter] = useState(filters.all);
   const [todosState, dispatch] = todoReducer();
   const allFilterClasses = cn({ selected: filter === filters.all });
@@ -21,11 +21,6 @@ export const App = () => {
 
   function renderTodo(item) {
     return <Todo item={item} key={`todo-${item.id}`} dispatch={dispatch} />;
-  }
-
-  function handleCheckbox(e) {
-    dispatch({ type: todoActions.toggleDoneAll, payload: e.target.checked });
-    setAllCompleted(e.target.checked);
   }
 
   function getCountUncompleted() {
@@ -67,14 +62,7 @@ export const App = () => {
         {todosState.items.length > 0 && (
           <Fragment>
             <section className="main">
-              <input
-                id="toggle-all"
-                className="toggle-all"
-                type="checkbox"
-                value={allCompleted}
-                onChange={handleCheckbox}
-              />
-              <label htmlFor="toggle-all">Mark all as complete</label>
+              <MarkAllCompleted dispatch={dispatch} />
               <ul className="todo-list">{getTodos().map(renderTodo)}</ul>
             </section>
             <footer className="footer">
