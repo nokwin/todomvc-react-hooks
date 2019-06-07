@@ -27,7 +27,7 @@ export const Todo = ({ item, store }) => {
     setTimeout(() => {
       editElement.current.focus();
     });
-  }, [])
+  }, [editElement.current])
 
   const finishEditing = useCallback(() => {
     setIsEditing(false);

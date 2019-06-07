@@ -15,7 +15,7 @@ export const CreateTodo = ({ store }) => {
       store.addTodo(newTodo);
       setNewTodo("");
     }
-  });
+  }, [newTodo]);
 
   return (
     <input
