@@ -1,21 +1,21 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 
 import { keys } from "../utils/enums";
 
 export const CreateTodo = ({ store }) => {
   const [newTodo, setNewTodo] = useState("");
 
-  function handleChange(e) {
+  const handleChange = useCallback((e) => {
     setNewTodo(e.target.value);
-  }
+  }, []);
 
-  function handleKeyPress(e) {
+  const handleKeyPress = useCallback((e) => {
     // Because of safari i must compare the string
     if (e.key === keys.enter) {
       store.addTodo(newTodo);
       setNewTodo("");
     }
-  }
+  });
 
   return (
     <input

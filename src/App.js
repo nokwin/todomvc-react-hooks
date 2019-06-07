@@ -1,5 +1,5 @@
-import React, { Fragment } from "react";
-import { observer } from "mobx-react";
+import React, { Fragment, useCallback } from "react";
+import { observer } from "mobx-react-lite";
 
 import { Todo } from "./components/Todo";
 import { CreateTodo } from "./components/CreateTodo";
@@ -7,9 +7,7 @@ import { MarkAllCompleted } from "./components/MarkAllCompleted";
 import { Filters } from "./components/Filters";
 
 export const AppComponent = ({ store }) => {
-  function renderTodo(item) {
-    return <Todo item={item} key={`todo-${item.id}`} store={store} />;
-  }
+  const renderTodo = useCallback(item => <Todo item={item} key={`todo-${item.id}`} store={store} />, [store.todos]);
 
   return (
     <Fragment>

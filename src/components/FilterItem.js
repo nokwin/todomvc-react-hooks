@@ -1,12 +1,14 @@
-import React from "react";
+import React, { useCallback, useMemo } from "react";
 import cn from "classnames";
 
 export const FilterItem = ({ filter, children, setFilter, currentFilter }) => {
-  const filterClasses = cn({ selected: currentFilter === filter });
-
-  function handleOnClick() {
+  const handleOnClick = useCallback(() => {
     setFilter(filter);
-  }
+  }, []);
+
+  const filterClasses = useMemo(() => {
+    cn({ selected: currentFilter === filter })
+  }, [currentFilter]);
 
   return (
     <li>

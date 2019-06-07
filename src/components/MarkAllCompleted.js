@@ -1,12 +1,12 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useState, useCallback } from "react";
 
 export const MarkAllCompleted = ({ store }) => {
   const [allCompleted, setAllCompleted] = useState(false);
 
-  function handleCheckbox(e) {
+  const handleCheckbox = useCallback((e) => {
     store.toggleDoneAll(e.target.checked);
     setAllCompleted(e.target.checked);
-  }
+  }, []);
 
   return (
     <Fragment>

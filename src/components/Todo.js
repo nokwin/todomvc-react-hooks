@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useCallback } from "react";
 import cn from "classnames";
 
 import { keys } from "../utils/enums";
@@ -9,36 +9,36 @@ export const Todo = ({ item, store }) => {
   const editElement = useRef(null);
   const classes = cn({ completed: item.done, editing: isEditing });
 
-  function handleOnChange() {
+  const handleOnChange = useCallback(e => {
     store.toggleDone(item.id);
-  }
+  }, []);
 
-  function handleOnClick() {
+  const handleOnClick = useCallback(() => {
     store.delete(item.id);
-  }
+  }, []);
 
-  function handleEditOnChange(e) {
+  const handleEditOnChange = useCallback(e => {
     setEditValue(e.target.value);
-  }
+  }, []);
 
-  function handleOnDoubleClick() {
+  const handleOnDoubleClick = useCallback(() => {
     setIsEditing(true);
 
     setTimeout(() => {
       editElement.current.focus();
     });
-  }
+  }, [])
 
-  function finishEditing() {
+  const finishEditing = useCallback(() => {
     setIsEditing(false);
     store.edit(item.id, editValue);
-  }
+  }, [editValue]);
 
-  function handleOnKeyPress(e) {
+  const handleOnKeyPress = useCallback((e) => {
     if (e.key === keys.enter) {
       finishEditing();
     }
-  }
+  }, []);
 
   return (
     <li className={classes}>
